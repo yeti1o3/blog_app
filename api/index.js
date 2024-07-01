@@ -1,21 +1,30 @@
-const express = require("express");
-const cors=require('cors');
-const mongoose=require('mongoose');
-const User=require('./models/User')
-const app = express();
-const port = 4000;
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import connectDB from './config/db.js';
+import User from './models/User.models.js';
+const app=express();
+const port=4000;
+app.use(cors());
+connectDB();
+app.use(bodyParser.json());
 
-app.use(cors())
-app.use(express.json());
-
-mongoose.connect(
-  'mongodb+srv://sanksar:FZVGObGNsfFk5hkp@cluster0.ajlkhr7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+app.post('/register', async(req, res) => {
+  const {username,password}=req.body;
+    console.log("this is working");
+    if(username && password)
+    {
+      try {const userDoc=await User.create({username,password})
+      console.log("username ",username,"password ",password);
+    res.send(userDoc);}catch{
+      res.send(error);
+    }}
+    else{
+      res.send("error occurred");
+    }
+    }
 );
-app.post('/register',async (req,res)=>{
-    const{username,password}=req.body;
-    const userDoc=await User.create({username,password});
-    res.json(userDoc);
-});
-app.listen(port)
-
+app.listen(port,()=>{
+  console.log('server is running on port ',port);
+})
 //FZVGObGNsfFk5hkp
