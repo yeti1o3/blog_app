@@ -5,16 +5,20 @@ import connectDB from './config/db.js';
 import User from './models/User.models.js';
 import bcrypt from 'bcrypt';
 import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
 const app=express();
 const port=4000;
 app.use(cors({
-  origin: 'http://localhost:3001',
+  origin: 'http://localhost:3000',
   credentials: true,
 }));
 connectDB();
 app.use(cookieParser());
 app.use(bodyParser.json());
+
 const salt=bcrypt.genSaltSync(10);
+const secret='abseniheifhghb';
+
 app.post('/login',async(req,res)=>{
   const {username,password}=req.body;
   if(!username||!password){
@@ -30,12 +34,15 @@ app.post('/login',async(req,res)=>{
           res.status(500).json({error:"Internal server error"});
         }
         if(result){
-          res.cookie('username',userDoc.username,{httpOnly:true,secure:true,sameSite:'none'});
-          res.cookie('fullname',userDoc.fullname,{httpOnly:true,secure:true,sameSite:'none'});  
-          res.cookie('email',userDoc.email,{httpOnly:true,secure:true,sameSite:'none'});
-          res.json("password match");
+          jwt.sign({username,id:userDoc._id,fullname:userDoc.fullname},secret,{},(err,token)=>{
+            if(err)
+            {
+              res.status(500).json("token error");
+            }
+            res.cookie('token',token).json("ok");
+          })
         }else{
-          res.json("password does not match");
+          res.status(400).json("password does not match");
         }
       })
     }catch(error){
@@ -43,6 +50,22 @@ app.post('/login',async(req,res)=>{
     }
   })
 
+  app.get('/profile',async (req,res)=>{
+    const token=req.cookies.token;
+    
+    if(!token){
+      return res.status(401).json({error:"Unauthorized"});
+    }
+    jwt.verify(token,secret,{},(err,decoded)=>{
+      if(err){
+        return res.status(401).json({error:"Unauthorized"});
+      }
+      res.json(decoded);
+    })
+  })
+  app.post('/logout',(req,res)=>{
+   return res.clearCookie('token').json("ok");
+  })
 app.post('/register', async(req, res) => {
   const {fullname,email,username,password}=req.body;
   if (!fullname || !email || !username || !password) {
