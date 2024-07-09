@@ -34,7 +34,7 @@ function CreatePostPage() {
     data.set('files',files[0]);
     
       try {
-        const response= await axios.post('http://localhost:4000/createpost',data,{headers:{
+        const response= await axios.post('http://localhost:4000/setpost',data,{headers:{
         'Content-Type':'multipart/form-data'
         },withCredentials:true})
         console.log(response.data);

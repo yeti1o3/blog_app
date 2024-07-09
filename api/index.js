@@ -8,7 +8,7 @@ import 'dotenv/config';
 // Import routes
 import authRoutes from './routes/auth.js';
 import profileRoutes from './routes/profile.js';
-import createpostRoutes from './routes/createpost.js';
+import postRoutes from './routes/post.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 // Use routes
 app.use('/', authRoutes);
 app.use('/', profileRoutes);
-app.use('/',createpostRoutes)
+app.use('/',postRoutes)
 
 app.listen(port, () => {
   console.log('server is running on port', port);

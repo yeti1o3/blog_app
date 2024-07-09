@@ -6,10 +6,12 @@ import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import CreatePostPage from './pages/CreatePostPage';
 import { UserProvider } from './context/UserContext';
+import { PostProvider } from './context/PostContext';
 function App() {
   return (
     <div className="App">
       <UserProvider>
+        <PostProvider>
       <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />} >
@@ -20,6 +22,7 @@ function App() {
         </Route>
       </Routes>
       </BrowserRouter>
+        </PostProvider>
       </UserProvider>
     </div>
   );
