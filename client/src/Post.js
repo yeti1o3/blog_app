@@ -1,7 +1,8 @@
 import React from 'react'
+import {formatISO9075} from 'date-fns'
 function Post({post}) {
   console.log(post);
-  const{title,summery,image}=post;
+  const{title,summery,image,createdAt}=post;
   return (
     <div className="post">
       <div className="image">
@@ -14,7 +15,7 @@ function Post({post}) {
         <h2>{title}</h2>
         <p className="info">
           <a className="author"> sanskar sharma</a>
-          <time>04-06-2003</time>
+          <time>{formatISO9075(new Date(createdAt))}</time>
         </p>
         <p className="summery">
           {summery}

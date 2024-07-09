@@ -6,7 +6,7 @@ import { PostContext } from '../context/PostContext';
 function PostPage() {
   const {postInfo,setPostInfo} = useContext(PostContext);
   useEffect(() => {
-    axios.get('http://localhost:4000/getpost').then((response) => {
+    axios.get('http://localhost:4000/getpost',{withCredentials:true}).then((response) => {
       setPostInfo(response.data);
     }).catch((error) => {
       console.log(error);
@@ -14,7 +14,7 @@ function PostPage() {
   },[]);
  
   return (
-    <div>
+    <div className='postpage'>
       {postInfo ? postInfo.map((post) => <Post key={post._id} post={post} />) : <div>Not found</div>}
     </div>
   );
