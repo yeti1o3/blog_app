@@ -6,11 +6,7 @@ main{
   max-width: 700px;
   margin: 0 auto;
 }
-img{
-  max-width: 100%;
-  height: auto;
-  object-fit:fill;
-}
+
 header{
   display: flex;
   justify-content: space-between;
@@ -39,9 +35,9 @@ div.post{
   gap: 20px;
   margin: 30px;
 }
-div.image{
-  position: relative;
-  object-fit: cover;
+div.text{
+  height: inherit;
+  text-overflow: ellipsis;
 }
 div.post div.text h2{
   margin: 0;
@@ -88,4 +84,12 @@ form.login form.register h1{
 }
 .createPost{
   margin-top: 10px;
+}
+img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.image{
+  overflow: hidden;
 }
